@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <title>{{ name_en }}</title>
+    </head>
+
+    <body>
+        <h1>{{ name_en}}</h1>
+            {% if name_en %}
+            <ul>
+              <li>HP: {{ hp }}</li>
+              <li>EVO: {{ evo_base }} &#x2192; {{ evo_final}}</li>
+            </ul>
+            {% else %}
+            <strong> Card doesn't exist! </strong>
+            {% endif %}
+    </body>
+</html>
+

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Card Album</title>
+    </head>
+    <body>
+    {% if cards %}
+        <h1>Let me show you my pokeymans</h1>
+            <ul>
+                {% for card in cards %}
+                <li><a href="/album/{{card.name_en_slug}}">{{ card.name_en }}</a></li>
+                {% endfor %}
+            </ul>
+    {% else %}
+            <strong>There are no cards present.</strong>
+    {% endif %}
+    </body>
+</html>
+
