@@ -35,11 +35,25 @@ class Card(models.Model):
     cost =  models.PositiveSmallIntegerField(default=0)
     orb =  models.PositiveSmallIntegerField(default=0)
     SKILL_TYPES = (
-                    ('Fire', 'Fire'),
-                    ('Water', 'Water'),
-                    ('Wood', 'Wood'),
-                    ('Hit','Hit'),
-                    ('Slash','Slash'),
+                    ('Bite',       'Bite'),     
+                    ('Slash',      'Slash'),    
+                    ('Stab',       'Stab'),     
+                    ('Hit',        'Hit'),      
+                    ('Claw',       'Claw'),     
+                    ('Fire',       'Fire'),     
+                    ('Water',      'Water'),    
+                    ('Wood',       'Wood'),     
+                    ('Enhance',    'Enhance'),  
+                    ('Heal',       'Heal'),     
+                    ('Shield',     'Shield'),   
+                    ('Buff',       'Buff'),     
+                    ('Debuff',     'Debuff'),   
+                    ('Status',     'Status'),   
+                    ('Poly',       'Poly'),     
+                    ('Star',       'Star'),     
+                    ('Yin Yang',   'Yin Yang'), 
+                    ('Holy',       'Holy'),     
+                    ('None',       'None'), 
                   )
     main_skill_type = models.TextField(max_length=10, choices=SKILL_TYPES, default='')
     main_skill_en = models.CharField(max_length=60, default='')
@@ -76,6 +90,6 @@ class Property(models.Model):
 class Type(models.Model):
     type_en = models.CharField(max_length=30, unique=True)
     type_ja = models.CharField(max_length=30, default='')
-    cardTypes = models.ManyToManyField(Card)
+    cards=models.ManyToManyField(Card)
     def __str__(self):
-        return self.name
+        return self.type_en

@@ -55,6 +55,16 @@ def main():
         c.subskill_desc_en =      x[r'Sub Skill Description\(en\)=(.*\n?)\|']
         c.subskill_ja =           x[r'Sub Skill\(ja\)=(.*\n?)\|']
         c.subskill_desc_ja =      x[r'Sub Skill Description\(ja\)=(.*\n?)\|']
+        # extra logic for types because of many-to-many relation
+        cardtypes = x[r'Types\(en\)=(.*\n?)\|'].strip().split(',')
+        for x in cardtypes:
+            if x == '':
+                Type.objects.get(type_en='None').cards.add(c)
+                continue
+
+            Type.objects.get(type_en=x.strip()).cards.add(c)
+
+
         c.save()
 
 
@@ -80,7 +90,7 @@ def getBlankDict():
             r'Sub Skill Description\(en\)=(.*\n?)\|':'',
             r'Sub Skill\(ja\)=(.*\n?)\|':'',
             r'Sub Skill Description\(ja\)=(.*\n?)\|':'',
-            r'Types=(.*\n?)\|':'', #store types as comma separated string for now, deal with it later when entering into db
+            r'Types\(en\)=(.*\n?)\|':'', #store types as comma separated string for now, deal with it later when entering into db
             }
     return dict
 
