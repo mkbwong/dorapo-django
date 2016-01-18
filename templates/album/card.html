@@ -1,48 +1,44 @@
-<!DOCTYPE html>
-<html>
-    <head>
-    <title>{{ name_en }}</title>
-    </head>
+{% extends "album/base.html" %}
 
-    <body>
-        {% if translated_name_en %}
-        <h1>{{ translated_name_en}}</h1>
-        {% else %}
-        <h1>{{ name_en}}</h1>
-        {% endif %}
-        <h1>{{ name_ja }}</h1>
-            {% if name_en %}
-            <ul>
-              <li>EVO: {{ evo_base }} &#x2192; {{ evo_final}}</li>
-              <li>HP: {{ hp }}</li>
-              <li>ATK: {{ attack }}</li>
-              <li>DEF: {{ defense }}</li>
-              <li>Max Level: {{ level }}</li>
-              <li>Element: {{ element }}</li>
-              <li>Types: {{ types }}</li>
-              <li>Cost: {{ cost }}</li>
-              <li>Orbs: {{ orb }}</li>
-              <li>Skill type: {{ main_skill_type }}</li>
-              <li>Main Skill: {{ main_skill_en }}</li>
-                <ul>
-                <li>{{ main_skill_desc_en }}</li>
-                </ul>
-              <li>{{ main_skill_ja }}</li>
-                <ul>
-                <li>{{ main_skill_desc_ja }}</li>
-                </ul>
-              <li>Subskill: {{ subskill_en }}</li>
-                <ul>
-                <li>{{ subskill_desc_en }}</li>
-                </ul>
-              <li>{{ subskill_ja }}</li>
-                <ul>
-                <li>{{ subskill_desc_ja }}</li>
-                </ul>
-              </ul>
-            {% else %}
-            <strong> Card doesn't exist! </strong>
-            {% endif %}
-    </body>
-</html>
+{% block title %}{{ name_en }}{% endblock %}
 
+{% block content %}
+{% if translated_name_en %}
+<h1>{{ translated_name_en}}</h1>
+{% else %}
+<h1>{{ name_en}}</h1>
+{% endif %}
+<h1>{{ name_ja }}</h1>
+    {% if name_en %}
+    <ul>
+      <li>EVO: {{ evo_base }} &#x2192; {{ evo_final}}</li>
+      <li>HP: {{ hp }}</li>
+      <li>ATK: {{ attack }}</li>
+      <li>DEF: {{ defense }}</li>
+      <li>Max Level: {{ level }}</li>
+      <li>Element: {{ element }}</li>
+      <li>Types: {{ types }}</li>
+      <li>Cost: {{ cost }}</li>
+      <li>Orbs: {{ orb }}</li>
+      <li>Skill type: {{ main_skill_type }}</li>
+      <li>Main Skill: {{ main_skill_en }}</li>
+        <ul>
+        <li>{{ main_skill_desc_en }}</li>
+        </ul>
+      <li>{{ main_skill_ja }}</li>
+        <ul>
+        <li>{{ main_skill_desc_ja }}</li>
+        </ul>
+      <li>Subskill: {{ subskill_en }}</li>
+        <ul>
+        <li>{{ subskill_desc_en }}</li>
+        </ul>
+      <li>{{ subskill_ja }}</li>
+        <ul>
+        <li>{{ subskill_desc_ja }}</li>
+        </ul>
+      </ul>
+    {% else %}
+    <strong> Card doesn't exist! </strong>
+    {% endif %}
+{% endblock %} 
