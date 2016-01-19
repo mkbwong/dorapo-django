@@ -1,0 +1,15 @@
+{% extends "album/base.html" %}
+
+{% block title%}Search Results{% endblock %}
+{% block content %}
+<h1>Search Results</h1>
+{% if results %}
+  <ul>
+      {% for card in results %}
+      <li><a href="/album/{{card.name_en_slug}}">{{ card.name_en }}</a></li>
+      {% endfor %}
+  </ul>
+{% else %}
+        <strong>Nothing matches found</strong>
+{% endif %}
+{% endblock %}

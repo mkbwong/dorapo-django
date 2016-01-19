@@ -9,16 +9,23 @@
 </head>
 <body>
 {% block header %}
-<ul class="header">
-  <li><a href="/album/">Home</a></li>
-  <li><a href="/album/">Album</a></li>
-  <li><a href="#news">News</a></li>
-  <li><a href="http://mg1.duckdns.org/wiki/">Wiki</a></li>
-  <ul style="float:right;list-style-type:none;">
-    <li><a href="#login">Login</a></li>
-    <li><a href="#advanced search">Advanced Search</a></li>
+<div class="header">
+  <ul class="header">
+    <li><a href="/album/">Home</a></li>
+    <li><a href="/album/">Album</a></li>
+    <li><a href="/album/#news">News</a></li>
+    <li><a href="http://mg1.duckdns.org/wiki/">Wiki</a></li>
+    <ul style="float:right;list-style-type:none;">
+      <li><a href="#login">Login</a></li>
+      <li><a href="#advanced search">Advanced Search</a></li>
+      <li>
+        <form class="bsearchbox" action="/album/bsearch" method="GET">
+          <input type="text" placeholder="Card Name" name="name">
+        </form>
+      </li>
+    </ul>
   </ul>
-</ul>
+</div>
 {% endblock %}
   <div class="content">
   {% block content %}{% endblock %}

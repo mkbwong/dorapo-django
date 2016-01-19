@@ -1,5 +1,8 @@
 from django.shortcuts import render
 from album.models import Card
+from django.db.models import Q
+
+from .forms import BasicCardSearchForm
 
 # Create your views here.
 def card(request, name_en_slug):
@@ -41,3 +44,16 @@ def card(request, name_en_slug):
 def index(request):
     context_dict = {'cards':Card.objects.all()}
     return render(request, 'album/index.html', context_dict)
+
+def bsearch(request):
+    try:
+        name = request.GET['name']
+        context_dict = {'results': Card.objects.filter(Q(name_en__icontains=name)|Q(name_ja__icontains=name))}
+    except Card.DoesNotExist:
+        context_dict = {'results':''}
+    return render(request, 'album/bsearchresult.html', context_dict)
+
+def get_card(request):
+    form =  BasicCardSearchForm()
+    return render(request, 'search.html', context_dict)
+
