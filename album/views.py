@@ -3,6 +3,7 @@ from album.models import Card
 from django.db.models import Q
 
 from .forms import BasicCardSearchForm
+import md5
 
 # Create your views here.
 def card(request, name_en_slug):
@@ -35,7 +36,10 @@ def card(request, name_en_slug):
         types = map(lambda t: t.type_en, card.type_set.all())
         context_dict['types'] =                 ', '.join(types)
 
-
+        #get hashed directory name for card image
+        m = md5.new(card.name_en.replace(' ','_')+'card.png')
+        h = m.digest()[0].encode('hex')
+        context_dict['cardimgurl'] = h[0]+r'/'+h+r'/'+card.name_en.replace(' ','_')+'card.png'
     except Card.DoesNotExist:
         pass
 
