@@ -1,0 +1,9 @@
+{% extends "album/base.html" %}
+
+{% block title%}Dorapo Album - Advanced Search{% endblock %}
+{% block content %}
+<form method="get" action="/album/asearch/">
+  {{ searchform}}
+  <input type="submit" value="submit">
+</form>
+{% endblock %}

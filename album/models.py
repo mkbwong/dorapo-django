@@ -1,4 +1,6 @@
 from django.db import models
+from django.forms import ModelForm
+
 from django.template.defaultfilters import slugify
 from django.utils.encoding import python_2_unicode_compatible
 
@@ -55,7 +57,7 @@ class Card(models.Model):
                     ('Holy',       'Holy'),     
                     ('None',       'None'), 
                   )
-    main_skill_type = models.TextField(max_length=10, choices=SKILL_TYPES, default='')
+    main_skill_type = models.CharField(max_length=30, choices=SKILL_TYPES, default='')
     main_skill_en = models.CharField(max_length=60, default='')
     main_skill_desc_en = models.TextField(default='') 
     main_skill_ja = models.CharField(max_length=60, default='')
@@ -93,3 +95,8 @@ class Type(models.Model):
     cards=models.ManyToManyField(Card)
     def __str__(self):
         return self.type_en
+
+class CardForm(ModelForm):
+    class Meta:
+        model = Card
+        fields = '__all__'

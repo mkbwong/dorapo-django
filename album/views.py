@@ -1,8 +1,9 @@
 from django.shortcuts import render
-from album.models import Card
+from album.models import Card, CardForm
 from django.db.models import Q
+from django.forms import modelformset_factory
+from django.http import HttpResponse
 
-from .forms import BasicCardSearchForm
 import md5
 
 # Create your views here.
@@ -49,15 +50,28 @@ def index(request):
     context_dict = {'cards':Card.objects.all()}
     return render(request, 'album/index.html', context_dict)
 
-def bsearch(request):
+def search(request):
     try:
         name = request.GET['name']
         context_dict = {'results': Card.objects.filter(Q(name_en__icontains=name)|Q(name_ja__icontains=name))}
     except Card.DoesNotExist:
         context_dict = {'results':''}
-    return render(request, 'album/bsearchresult.html', context_dict)
+    return render(request, 'album/searchresult.html', context_dict)
+
+def asearch(request):
+    formset = CardForm(instance=Card.objects.get(name_en='petronius'))
+
+    # just the asearch is requested, serve blank search form
+    if request.get_full_path() == '/album/asearch/':
+        return render(request, 'album/asearch.html', {'searchform': formset.as_p()})
+
+    context_dict = request.GET
+    response = HttpResponse()
+    for x in context_dict:
+        response.write(u"<p>{0}-{1}<p>".format(x, context_dict[x]))
+    return response
+    return render(request, 'album/searchresult.html', context_dict)
 
 def get_card(request):
     form =  BasicCardSearchForm()
     return render(request, 'search.html', context_dict)
-
