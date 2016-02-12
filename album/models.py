@@ -1,5 +1,5 @@
 from django.db import models
-from django.forms import ModelForm
+from django import forms
 
 from django.template.defaultfilters import slugify
 from django.utils.encoding import python_2_unicode_compatible
@@ -79,6 +79,8 @@ class Card(models.Model):
         super(Card, self).save(*args, **kwargs)
 
 
+# Property - properties or tags of skills/subskills related using ManyToMany
+#            with separate intermediate tables for skill and subskill
 @python_2_unicode_compatible
 class Property(models.Model):
     name = models.CharField(max_length=30, unique=True)
@@ -88,6 +90,7 @@ class Property(models.Model):
     def __str__(self):
         return self.name
 
+# Type - Card types like Girl, God, Eldritch, Demon, etc
 @python_2_unicode_compatible
 class Type(models.Model):
     type_en = models.CharField(max_length=30, unique=True)
@@ -96,7 +99,10 @@ class Type(models.Model):
     def __str__(self):
         return self.type_en
 
-class CardForm(ModelForm):
+class CardForm(forms.ModelForm):
     class Meta:
         model = Card
         fields = '__all__'
+        widgets = {
+            'main_skill_type': forms.CheckboxSelectMultiple,
+            }

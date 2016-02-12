@@ -1,9 +1,8 @@
+from django.http import HttpResponse
 from django.shortcuts import render
 from album.models import Card, CardForm
 from django.db.models import Q
-from django.forms import modelformset_factory
-from django.http import HttpResponse
-
+import dorapotools as dt
 import md5
 
 # Create your views here.
@@ -24,7 +23,7 @@ def card(request, name_en_slug):
         context_dict['element'] =               card.element                   
         context_dict['cost'] =                  card.cost                      
         context_dict['orb'] =                   card.orb                       
-        context_dict['main_skill_type'] =       card.main_skill_type           
+        context_dict['main_skill_type'] =       dt.hashedDir(card.main_skill_type+'.png')
         context_dict['main_skill_en'] =         card.main_skill_en             
         context_dict['main_skill_desc_en'] =    card.main_skill_desc_en        
         context_dict['main_skill_ja'] =         card.main_skill_ja             
@@ -38,9 +37,7 @@ def card(request, name_en_slug):
         context_dict['types'] =                 ', '.join(types)
 
         #get hashed directory name for card image
-        m = md5.new(card.name_en.replace(' ','_')+'card.png')
-        h = m.digest()[0].encode('hex')
-        context_dict['cardimgurl'] = h[0]+r'/'+h+r'/'+card.name_en.replace(' ','_')+'card.png'
+        context_dict['cardimgurl'] = dt.hashedDir(card.name_en.replace(' ','_')+'card.png')
     except Card.DoesNotExist:
         pass
 
@@ -59,19 +56,16 @@ def search(request):
     return render(request, 'album/searchresult.html', context_dict)
 
 def asearch(request):
-    formset = CardForm(instance=Card.objects.get(name_en='petronius'))
-
+    form = CardForm()
     # just the asearch is requested, serve blank search form
     if request.get_full_path() == '/album/asearch/':
-        return render(request, 'album/asearch.html', {'searchform': formset.as_p()})
+        return render(request, 'album/asearch.html', {'searchform': form})
 
-    context_dict = request.GET
-    response = HttpResponse()
-    for x in context_dict:
-        response.write(u"<p>{0}-{1}<p>".format(x, context_dict[x]))
-    return response
+    context_dict = {}
+    q = Q()
+    print request.GET['main_skill_type']
+    for skill in request.GET.getlist('main_skill_type'):
+        q.add(Q(main_skill_type__contains=skill), q.OR)
+
+    context_dict['results']=Card.objects.filter(q)
     return render(request, 'album/searchresult.html', context_dict)
-
-def get_card(request):
-    form =  BasicCardSearchForm()
-    return render(request, 'search.html', context_dict)
