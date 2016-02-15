@@ -1,5 +1,4 @@
 from django.db import models
-from django import forms
 
 from django.template.defaultfilters import slugify
 from django.utils.encoding import python_2_unicode_compatible
@@ -55,7 +54,7 @@ class Card(models.Model):
                     ('Star',       'Star'),     
                     ('Yin Yang',   'Yin Yang'), 
                     ('Holy',       'Holy'),     
-                    ('None',       'None'), 
+                    ('No Skill',       'No Skill'), 
                   )
     main_skill_type = models.CharField(max_length=30, choices=SKILL_TYPES, default='')
     main_skill_en = models.CharField(max_length=60, default='')
@@ -70,6 +69,10 @@ class Card(models.Model):
     # Property - properties or tags of skills/subskills related using ManyToMany
     #            with separate intermediate tables for skill and subskill
     # Type - Card types like Girl, God, Eldritch, Demon, etc
+    main_skill_properties = models.ManyToManyField('SkillProperty', related_name='main_skill_properties_set')
+    subskill_properties = models.ManyToManyField('SkillProperty', related_name='subskill_properties_set')
+    types = models.ManyToManyField('CardType')
+
     def __str__(self):
         return self.name_en
 
@@ -82,27 +85,17 @@ class Card(models.Model):
 # Property - properties or tags of skills/subskills related using ManyToMany
 #            with separate intermediate tables for skill and subskill
 @python_2_unicode_compatible
-class Property(models.Model):
+class SkillProperty(models.Model):
     name = models.CharField(max_length=30, unique=True)
     desc = models.TextField()
-    skill_relation = models.ManyToManyField(Card, related_name='skill_properties_set')
-    subskill_relation = models.ManyToManyField(Card, related_name='subskill_properties_set')
     def __str__(self):
         return self.name
 
 # Type - Card types like Girl, God, Eldritch, Demon, etc
 @python_2_unicode_compatible
-class Type(models.Model):
+class CardType(models.Model):
     type_en = models.CharField(max_length=30, unique=True)
     type_ja = models.CharField(max_length=30, default='')
-    cards=models.ManyToManyField(Card)
     def __str__(self):
         return self.type_en
 
-class CardForm(forms.ModelForm):
-    class Meta:
-        model = Card
-        fields = '__all__'
-        widgets = {
-            'main_skill_type': forms.CheckboxSelectMultiple,
-            }

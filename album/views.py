@@ -1,7 +1,9 @@
 from django.http import HttpResponse
 from django.shortcuts import render
-from album.models import Card, CardForm
+from album.models import Card
+from album.forms import CardForm
 from django.db.models import Q
+import json
 import dorapotools as dt
 import md5
 
@@ -23,7 +25,8 @@ def card(request, name_en_slug):
         context_dict['element'] =               card.element                   
         context_dict['cost'] =                  card.cost                      
         context_dict['orb'] =                   card.orb                       
-        context_dict['main_skill_type'] =       dt.hashedDir(card.main_skill_type+'.png')
+        context_dict['main_skill_type_img'] =   '' if card.main_skill_type =='' else  dt.hashedDir(card.main_skill_type+'.png')
+        context_dict['main_skill_type'] =       card.main_skill_type
         context_dict['main_skill_en'] =         card.main_skill_en             
         context_dict['main_skill_desc_en'] =    card.main_skill_desc_en        
         context_dict['main_skill_ja'] =         card.main_skill_ja             
@@ -33,7 +36,8 @@ def card(request, name_en_slug):
         context_dict['subskill_ja'] =           card.subskill_ja               
         context_dict['subskill_desc_ja'] =      card.subskill_desc_ja          
 
-        types = map(lambda t: t.type_en, card.type_set.all())
+        # converts the list of django models into their name attribute
+        types = map(lambda t: u'{0} ({1})'.format(t.type_en, t.type_ja), card.types.all())
         context_dict['types'] =                 ', '.join(types)
 
         #get hashed directory name for card image
@@ -69,3 +73,9 @@ def asearch(request):
 
     context_dict['results']=Card.objects.filter(q)
     return render(request, 'album/searchresult.html', context_dict)
+
+def autocomplete(request):
+  cards = Card.objects.all()
+  name=[{'name':c.name_en} for c in cards]
+  name+=[{'name':c.name_ja} for c in cards]
+  return HttpResponse(json.dumps(name))

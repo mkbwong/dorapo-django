@@ -4,11 +4,14 @@
 
 {% block content %}
 <div class="card" style="width:70%;float:left;">
-  {% if translated_name_en %}
-  <h1>{{ translated_name_en}}</h1>
+  <h1>{% if translated_name_en %}
+  {{ translated_name_en}}
   {% else %}
-  <h1>{{ name_en}}</h1>
+  {{ name_en}}
   {% endif %}
+  <img src=http://mg1.duckdns.org/wiki/images/{{ main_skill_type_img }}>
+  </h1>
+
   <h1>{{ name_ja }}</h1>
       {% if name_en %}
       <ul>
@@ -21,7 +24,7 @@
         <li>Types: {{ types }}</li>
         <li>Cost: {{ cost }}</li>
         <li>Orbs: {{ orb }}</li>
-        <li>Skill type: <img src=http://mg1.duckdns.org/wiki/images/{{ main_skill_type }}></li>
+        <li>Skill type: {{ main_skill_type }}</li>
         <li>Main Skill: {{ main_skill_en }}</li>
           <ul>
           <li>{{ main_skill_desc_en }}</li>

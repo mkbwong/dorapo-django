@@ -6,6 +6,11 @@
 <link rel="stylesheet" type="text/css" href={% static "normalize.css" %}>
 <link rel="stylesheet" type="text/css" href={% static "header.css" %}>
 <meta charset="utf-8">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+
+<script src={% static "jquery.easy-autocomplete.min.js" %}></script> 
+<link rel="stylesheet" href={% static "easy-autocomplete.min.css" %}> 
+<link rel="stylesheet" href={% static "easy-autocomplete.themes.min.css" %}> 
 </head>
 <body>
 {% block header %}
@@ -14,12 +19,12 @@
     <li><a href="/album/">Home</a></li>
     <li><a href="http://mg1.duckdns.org/wiki/">Wiki</a></li>
     <li style="visibility:hidden;"><a href="/album/#news">News</a></li>
-    <ul style="float:right;list-style-type:none;">
+    <ul class="rheader" >
       <li style="visibility:hidden;"><a href="#login">Login</a></li>
       <li><a href="/album/asearch/">Advanced Search</a></li>
       <li>
         <form class="bsearchbox" action="/album/search/" method="GET">
-          <input type="text" placeholder="Card Name" name="name">
+        <input type="text" id="search" placeholder="Card Name" name="name">
         </form>
       </li>
     </ul>
@@ -29,5 +34,20 @@
   <div class="content">
   {% block content %}{% endblock %}
   </div>
+<script type="text/javascript">
+var options = {
+  url: "/album/autocomplete/",
+  getValue: "name",
+  list: {
+        match: {
+                enabled: true
+               },
+        maxNumberOfElements: 8
+  },
+
+};
+$("#search").easyAutocomplete(options);
+$("#search2").easyAutocomplete(options);
+</script>
 </body>
 </html>

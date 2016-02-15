@@ -11,7 +11,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'dorapo.settings')
 import django
 django.setup()
 
-from album.models import Card, Property, Type
+from album.models import Card, SkillProperty, CardType
 
 import re
 import xml.etree.ElementTree as ET
@@ -59,10 +59,10 @@ def main():
         cardtypes = x[r'Types\(en\)=(.*\n?)\|'].strip().split(',')
         for x in cardtypes:
             if x == '':
-                Type.objects.get(type_en='None').cards.add(c)
+                CardType.objects.get(type_en='None').card_set.add(c)
                 continue
 
-            Type.objects.get(type_en=x.strip()).cards.add(c)
+            CardType.objects.get(type_en=x.strip()).card_set.add(c)
 
 
         c.save()

@@ -7,7 +7,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'dorapo.settings')
 import django
 django.setup()
 
-from album.models import Card, Property, Type
+from album.models import Card, SkillProperty, CardType
 
 def main():
   types = {
@@ -28,7 +28,7 @@ def main():
             'Merc Storia':        u'メルスト族',      
           }
   for typ in types:
-    t = Type.objects.get_or_create(type_en=typ,type_ja=types[typ])[0]
+    t = CardType.objects.get_or_create(type_en=typ,type_ja=types[typ])[0]
     t.save()
 
 

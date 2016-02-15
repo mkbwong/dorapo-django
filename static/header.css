@@ -2,10 +2,10 @@
     list-style-type: none;
     margin: 0;
     padding: 0;
-    overflow: hidden;
     background-color: #333;
     position: fixed;
     width: 100%;
+    overflow: visible;
 }
 
 .header li {
@@ -18,6 +18,11 @@
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
+}
+
+.header ul.rheader {
+    float:right;
+    list-style-type:none;
 }
 
 .header ul li form.bsearchbox{
@@ -34,9 +39,6 @@
     padding-top: 50px;
 }
 
-.test {
-    display: inline-block;
-    padding: 10px;
-    border: 10px solid navy;
-    margin: 0px;
+.header div ul li {
+  width: 194px;
 }
